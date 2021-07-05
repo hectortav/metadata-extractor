@@ -36,9 +36,24 @@ void parse(char* html, char** part, const char* starts_with, const char* ends_wi
     }
 }
 
-void metadata(char* html) {
-    printf("{\"metadata\":[");
+char * my_strcatt(char *s1, const char *s2)
+{
+    const size_t a = strlen(s1);
+    const size_t b = strlen(s2);
+    const size_t size_ab = a + b + 1;
+
+    s1 = realloc(s1, size_ab);
+
+    memcpy(s1 + a, s2, b + 1);
+
+    return s1;
+}
+
+void metadata(char* html, char** meta) {
+    (*meta) = malloc(strlen("{\"metadata\":{") + 1);
+    strcpy((*meta), "{\"metadata\":{");
     char *start = html, *end, *data, *name = NULL, *value = NULL;
+    char isFirst = 1;
     while ((start = strstr(start, "<meta")) != NULL) {
         if ((end = strstr(start, ">"))) {
             start += strlen("<meta");
@@ -51,9 +66,16 @@ void metadata(char* html) {
             }
             parse(data, &value, "content=\"", "\"");
             if (name != NULL && value != NULL) {
-                printf("{\"%s\"", name);
-                printf(":\"%s\"},", value);
-
+                if (isFirst == 0) {
+                    (*meta) = my_strcatt((*meta), ",\"%s");
+                } else {
+                    (*meta) = my_strcatt((*meta), "\"%s");
+                }
+                (*meta) = my_strcatt((*meta), name);
+                (*meta) = my_strcatt((*meta), "\":\"");
+                (*meta) = my_strcatt((*meta), value);
+                (*meta) = my_strcatt((*meta), "\"");
+                isFirst = 0;
                 free(name);
                 name = NULL;
                 free(value);
@@ -64,32 +86,32 @@ void metadata(char* html) {
             start += strlen("<meta");
         }
     }
-    printf("]}\n");
+    (*meta) = my_strcatt((*meta), "}}");
 }
 
-int main(int argc, char **argv) {
+char* extract(const char* url) {
     char *head = NULL;
     CURL *curl;
-
     curl = curl_easy_init();
-
     if(curl) {
         string s;
         init_string(&s);
-
-        curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
+        curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
         curl_easy_perform(curl);
-
         parse(s.ptr, &head, "<head>", "</head>");
-        metadata(head);
-
+        char* meta = NULL;
+        metadata(head, &meta);
         free(s.ptr);
         free(head);
-
         curl_easy_cleanup(curl);
-        return 0;
+        return meta;
     }
-    return -1;
+    return NULL;
+}
+
+int main(int argc, char **argv) {
+    extract(argv[1]);
+    return 0;
 }

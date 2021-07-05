@@ -11,4 +11,5 @@ typedef struct {
 void init_string(string *s);
 size_t writefunc(void *ptr, size_t size, size_t nmemb, string *s);
 void parse(char* html, char** part, const char* starts_with, const char* ends_with);
-void metadata(char* html);
+void metadata(char* html, char** meta);
+char* extract(const char* url);
