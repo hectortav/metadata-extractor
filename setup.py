@@ -1,8 +1,11 @@
 from setuptools import setup, find_packages
+import subprocess
 
 VERSION = '0.0.1'
 DESCRIPTION = 'Extract metadata from url'
 LONG_DESCRIPTION = 'A package that allows you to extract metadata from static webpages.'
+
+subprocess.Popen("make", cwd="metadata_extractor")
 
 setup(
     name="metadata_extractor",
@@ -19,7 +22,5 @@ setup(
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Operating System :: Unix",
-        "Operating System :: MacOS :: MacOS X",
-        "Operating System :: Microsoft :: Windows",
     ]
 )

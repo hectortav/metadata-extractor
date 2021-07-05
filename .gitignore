@@ -4,3 +4,4 @@ extractor
 build
 dist
 *.egg-info
+*.pyc
