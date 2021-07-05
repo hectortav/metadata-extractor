@@ -1,8 +1,9 @@
+import os
 import ctypes
 import json
 
 def metadata(url):
-    dll = ctypes.CDLL("./extractor.so")
+    dll = ctypes.CDLL(os.path.join(os.path.dirname(os.path.realpath(__file__)), "_extractor.so"))
     dll.extract.restype = ctypes.c_char_p
     dll.extract.argtypes = [ctypes.c_char_p]
     result = dll.extract(url)
@@ -11,6 +12,3 @@ def metadata(url):
     # libc.free(_result)
     dict = json.loads(result.replace('%s', ''))
     return dict["metadata"]
-
-meta = metadata('https://interestingengineering.com/canada-is-banning-internal-combustion-engines-but-what-about-the-cold')
-print(meta["twitter:image"])
