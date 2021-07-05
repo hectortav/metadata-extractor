@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.pl": "prolog",
+        "extractor.h": "c"
+    }
+}
