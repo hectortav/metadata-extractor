@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 import subprocess
 
-VERSION = '0.0.1'
+VERSION = '0.0.4'
 DESCRIPTION = 'Extract metadata from url'
 LONG_DESCRIPTION = 'A package that allows you to extract metadata from static webpages.'
 
-subprocess.Popen("make", cwd="metadata_extractor")
+subprocess.call("make", cwd="metadata_from_url")
 
 setup(
-    name="metadata_extractor",
+    name="metadata_from_url",
     version=VERSION,
     author="hectortav (Ektoras Tavoularis)",
     author_email="<tavhector@gmail.com>",
@@ -22,5 +22,10 @@ setup(
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Operating System :: Unix",
-    ]
+    ],
+    include_package_data=True,
+    package_data={'metadata_from_url':['*.so']},
 )
+
+# python3 setup.py sdist bdist_wheel
+# twine upload dist/*
