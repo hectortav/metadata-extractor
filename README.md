@@ -1,18 +1,20 @@
 # Metadata extractor
 
+### Installation
+
 ```bash
 sudo apt-get update
 sudo apt-get install -y libcurl4-openssl-dev
 make
 ```
 
-# run example
+### Invocation example
 
 ```bash
 ./extractor https://interestingengineering.com/canada-is-banning-internal-combustion-engines-but-what-about-the-cold
 ```
 
-# example output
+### Output example
 
 ```json
 {
