@@ -1,1 +1,0 @@
-from metadata_extractor.extractor import metadata
