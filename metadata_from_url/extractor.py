@@ -11,4 +11,7 @@ def metadata(url):
     # libc = ctypes.CDLL("libc.so.6") 
     # libc.free(_result)
     dict = json.loads(result.replace('%s'.encode(), ''.encode()))
-    return dict["metadata"]
+    if not dict:
+        return None
+    else:        
+        return dict["metadata"]

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import subprocess
 
-VERSION = '0.0.4'
+VERSION = '0.0.6'
 DESCRIPTION = 'Extract metadata from url'
 LONG_DESCRIPTION = 'A package that allows you to extract metadata from static webpages.'
 
