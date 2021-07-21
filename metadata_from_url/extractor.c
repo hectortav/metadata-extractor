@@ -94,15 +94,20 @@ char* extract(const char* url) {
     CURL *curl;
     curl = curl_easy_init();
     if(curl) {
+        char* meta = NULL;
         string s;
         init_string(&s);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
         curl_easy_perform(curl);
-        parse(s.ptr, &head, "<head>", "</head>");
-        char* meta = NULL;
-        metadata(head, &meta);
+        if (s.ptr[0] != '\0') {
+            parse(s.ptr, &head, "<head>", "</head>");
+            metadata(head, &meta);
+        } else {
+            meta = malloc(sizeof(char)*3);
+            strcpy(meta, "{}");
+        }
         free(s.ptr);
         free(head);
         curl_easy_cleanup(curl);
@@ -112,6 +117,8 @@ char* extract(const char* url) {
 }
 
 int main(int argc, char **argv) {
-    extract(argv[1]);
+    char* metadata = extract(argv[1]);
+    printf("%s\n", metadata);
+    free(metadata);
     return 0;
 }
