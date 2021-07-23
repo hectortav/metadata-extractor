@@ -5,7 +5,7 @@
 ```bash
 sudo apt-get update
 sudo apt-get install -y libcurl4-openssl-dev
-cd metadata_extractor
+cd metadata_from_url
 make
 ```
 
